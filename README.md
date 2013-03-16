@@ -33,8 +33,9 @@ Then login (or switch user) on `http://127.0.0.1:8000/user/su/username`
 	* [fat] Fat commit, many changes
 
 ## JSON API
-Various JSON calls could be made against the P402 API.
-P402 is built on a graph. Every object is a node, wich may have children or not.
+Various JSON calls could be made against the P402 API. P402 is built on a graph.
+Every object is a node, wich may have children or not. The only constraint is 
+that the graph mustn't have cycles.
 
 ## The Graph
 
@@ -52,7 +53,7 @@ This will return something like this:
         'name' : str,
         'type' : str,
         'children' : list[{'id':int, 'name':str, 'type':str, 'url':str}, ...],
-		'url' : str
+		'url' : str    # <= This is Canonic URL for resource
     }
 
 ### Retrieve only basical informations
@@ -64,14 +65,14 @@ Will return
 	{'id':int, 'name':string, 'type':string, 'url':string}
 
 ## Accessing full objects
+You can access an entire resource by GETting the url given in the abstract node
+representation. Otherwise, you could easily craft URL.
+
 ### build an URL
 The URL scheme is:
 	
-	/{nodetype}/{nodeid}[/method][.json|html]
-
-You can see valid urls with 
-	
-	/graph/nodeid/short.json['url'].
+	/<nodetype>/<nodeid>[/method][/params][.json|html]
 
 If format is ommited, the format response is determined by the request headers. 
 It's json if the request was issued with an XHR, otherwise it's html.
+
