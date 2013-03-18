@@ -37,4 +37,4 @@ class TreadForm(forms.Form):
     tags = forms.CharField(required=False)
 
 class MessageForm(forms.Form):
-    text = forms.CharField()
+    text = forms.CharField(widget=forms.Textarea)
