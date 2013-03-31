@@ -6,10 +6,11 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from graph.models import Node, Taggable
+from graph.models import Node, Leaf, Taggable, CannotHaveChildren
 
 class SimpleTest(TestCase):
     def mkNode(self, name, klass=Node):
+        """Helper function to easily create nodes or inherited"""
         return klass.objects.create(name=name)
     
     
@@ -29,6 +30,11 @@ class SimpleTest(TestCase):
         self.assertFalse(c.attach(e), 'Indirect loop')
         self.assertTrue(c.attach(e, False), 'Force attach with loop')
     
+    
+    def testLeaves(self):
+        leaf = self.mkNode("Leaf", Leaf)
+        node = self.mkNode("Node")
+        self.assertRaises(CannotHaveChildren, leaf.attach, node, msg='Leaf cannot have child')
     
     def testReachablility(self):
         """

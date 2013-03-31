@@ -144,14 +144,14 @@ class CannotHaveChildren(Exception):
 
 class Leaf(Node):
     def attach(self, *args, **kwargs):
-        raise self.CannotHaveChildren()
+        raise CannotHaveChildren(self)
     
 
 
 class Taggable(Node):
     """An abstract taggable node. Taggable nodes have keywords."""
     keywords = models.ManyToManyField(Keyword)
-
+    
     @staticmethod
     def KW(name):
         """Simply create or get a keyword"""
