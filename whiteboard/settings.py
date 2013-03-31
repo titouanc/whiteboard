@@ -122,7 +122,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
+    #'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -131,11 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django_extensions',
     'whiteboard',
-    'keywords',
-    'graph',
-    'users',
-    'agora',
-    'course',
+    'graph'
 )
 
 AUTH_USER_MODEL = 'users.User'
