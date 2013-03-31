@@ -181,4 +181,8 @@ class Taggable(Node):
         return res
     
     related = related_list
-    
+
+
+class TaggableLeaf(Taggable, Leaf):
+    """Both flavors of Node subtypes"""
+    pass

@@ -6,7 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from graph.models import Node, Leaf, Taggable, CannotHaveChildren
+from graph.models import Node, Leaf, Taggable, TaggableLeaf, CannotHaveChildren
 
 class SimpleTest(TestCase):
     def mkNode(self, name, klass=Node):
@@ -36,6 +36,7 @@ class SimpleTest(TestCase):
         node = self.mkNode("Node")
         self.assertRaises(CannotHaveChildren, leaf.attach, node, msg='Leaf cannot have child')
     
+    
     def testReachablility(self):
         """
         Test some reachability methods on a simple graph
@@ -47,11 +48,29 @@ class SimpleTest(TestCase):
         a.attach(b) and b.attach(e)
         a.attach(c) and c.attach(d)
         c.attach(e)
+        walktypes = {'depth_first':True, 'breadth_first':False}
         ### AdventureTime !
-        self.assertTrue(e.has_ancestor(c), 'Direct parent->child relation')
-        self.assertTrue(e.has_ancestor(b), 'Direct parent->child relation (alt)')
-        self.assertTrue(e.has_ancestor(a), 'Grandfather->grandchild relation')
-        self.assertFalse(d.has_ancestor(b), 'No relation')
+        for walk in walktypes:
+            depth_first = walktypes[walk]
+            walk = '('+walk+')'
+            self.assertTrue(e.has_ancestor(c, depth_first), 'Direct parent->child relation '+walk)
+            self.assertTrue(e.has_ancestor(b, depth_first), 'Direct parent->child relation (alt) '+walk)
+            self.assertTrue(e.has_ancestor(a, depth_first), 'Grandfather->grandchild relation '+walk)
+            self.assertFalse(d.has_ancestor(b, depth_first), 'No relation '+walk)
+    
+    
+    def testTaggableLeaf(self):
+        root = self.mkNode("Root")
+        a, b, c = (self.mkNode(chr(ord('A')+i), TaggableLeaf) for i in range(3))
+        a.add_keywords('pig', 'a')
+        b.add_keywords('pig', 'b')
+        c.add_keywords('c')
+        child = self.mkNode("child")
+        root.attach(a) and root.attach(b) and root.attach(c)
+        ### AdventureTime !
+        self.assertIn(b, a.related(), 'Basic tag-based relation')
+        self.assertNotIn(c, a.related(), 'Basic tag-based no-relation')
+        self.assertRaises(CannotHaveChildren, a.attach, child, msg='Leaf cannot have child')
     
     
     def testRelated(self):
