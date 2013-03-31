@@ -38,7 +38,7 @@ class Node(PolymorphicModel):
     
     
     def __repr__(self):
-        return '<%s:%d "%s">'%(self.classBasename(), self.pk, self.name)
+        return '<{}={} "{}">'.format(self.classBasename(), self.pk, self.name)
     
     
     def childrens(self):
@@ -114,7 +114,19 @@ class Node(PolymorphicModel):
         """
         Retruns True if other is an acnestor of self. Otherwise False
         """
-        return self in  other.childrens_iterator()
+        return self in other.childrens_iterator()
+    
+    
+    def has_ancestor(self, ancestor, depth_first=True):
+        """Return True if self could be reached from ancestor"""
+        for parent in self.ancestors():
+            if parent == ancestor or (depht_first and parent.has_ancestor(ancestor)):
+                return True
+        if not depth_first:
+            for parent in self.ancestors():
+                if parent.has_ancestor(ancestor):
+                    return True
+        return False
     
     
     def distance(self, target):
@@ -148,7 +160,7 @@ class Taggable(Node):
         return existing if existing else created
     
     
-    def add_keyword(self, *tags):
+    def add_keywords(self, *tags):
         """Add a keyword by directly passing its name"""
         for tag in tags:
             self.keywords.add(self.KW(tag))
