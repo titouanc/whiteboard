@@ -2,12 +2,16 @@ from graph.models import Node
 from django.core.management.base import BaseCommand
 from optparse import make_option
 
+# To bring new colors to the graph, simply:
+#   from graph.management.commands.graphviz import Command
+#   Command.COLORS['MyNewType'] = 'purple'
+# note: color list is available at http://www.graphviz.org/content/color-names
+
 class Command(BaseCommand):
     COLORS = {
         'Node' : 'grey',
-        'Category': 'lightblue',
-        'Course': 'gold',
-        'Thread': 'coral'
+        'Leaf': 'lightblue',
+        'Taggable': 'coral'
     }
 
     help = """
