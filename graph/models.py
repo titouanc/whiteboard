@@ -120,7 +120,7 @@ class Node(PolymorphicModel):
     def has_ancestor(self, ancestor, depth_first=True):
         """Return True if self could be reached from ancestor"""
         for parent in self.ancestors():
-            if parent == ancestor or (depht_first and parent.has_ancestor(ancestor)):
+            if parent == ancestor or (depth_first and parent.has_ancestor(ancestor)):
                 return True
         if not depth_first:
             for parent in self.ancestors():
