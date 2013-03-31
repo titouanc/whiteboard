@@ -23,7 +23,8 @@ img.action { border: none; width: 20px; height: 20px; }
 .box .footer { margin-top: 3px; padding-top: 5px; padding-bottom: 5px; border-top: dotted 1px #333333; font-size: 85%; }
 
 #header { margin: 0px; padding: 10px; background-color: #1e4995; color: #fdfcfe; }
+#header #logo { border: none; display: inline; height: 50px; }
 #header a { color: #fdfcfe; }
-#header #logo { width: 30%; font-size: 200%; font-weight: bolder; }
-#header #logo:hover { color: #e4d6f1; }
+#header #title { display: inline; width: 30%; font-size: 200%; font-weight: bolder; }
+#header #title:hover { color: #e4d6f1; }
 #header #userinfo { text-align: right; width: 30%; }
